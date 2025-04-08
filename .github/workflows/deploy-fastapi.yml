@@ -30,6 +30,7 @@ jobs:
         cd deployment-package
         zip -r ../$GITHUB_SHA.zip .
 
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
