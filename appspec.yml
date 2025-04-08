@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/fastapi-app
+
+hooks:
+  AfterInstall:
+    - location: scripts/setup.sh
+      timeout: 60
+      runas: ec2-user
+    - location: scripts/deploy.sh
+      timeout: 60
+      runas: ec2-user
