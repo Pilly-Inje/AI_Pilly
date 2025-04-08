@@ -1,0 +1,49 @@
+name: Deploy FastAPI to EC2
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  PROJECT_NAME: fastapi_project
+  BUCKET_NAME: pilly-bucket
+  CODE_DEPLOY_APP_NAME: fastapiApp
+  DEPLOYMENT_GROUP_NAME: fastapi_deploy_group
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Create .env File
+      run: echo "${{ secrets.ENV_FILE }}" > .env
+
+    - name: Prepare Deployment Package
+      run: |
+        mkdir -p deployment-package
+        cp -r app scripts appspec.yml requirements.txt .env deployment-package/
+        cd deployment-package
+        zip -r ../$GITHUB_SHA.zip .
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+
+    - name: Upload Deployment Package to S3
+      run: aws s3 cp ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+
+    - name: Deploy to EC2 via CodeDeploy
+      run: |
+        aws deploy create-deployment \
+          --application-name $CODE_DEPLOY_APP_NAME \
+          --deployment-config-name CodeDeployDefault.OneAtATime \
+          --deployment-group-name $DEPLOYMENT_GROUP_NAME \
+          --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
