@@ -3,6 +3,7 @@
 echo "[SETUP] FastAPI 가상환경 및 의존성 설치 시작"
 
 APP_DIR=/home/ec2-user/fastapi-app
+TMP_DIR=/home/ec2-user/tmp
 
 sudo chown -R ec2-user:ec2-user $APP_DIR
 
@@ -12,6 +13,7 @@ cd $APP_DIR || {
 }
 
 mkdir -p "$APP_DIR/logs"
+mkdir -p "$TMP_DIR"
 
 if [ -d "venv" ]; then
   echo "[SETUP] 기존 venv 삭제"
