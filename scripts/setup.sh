@@ -10,13 +10,15 @@ export PIP_NO_CACHE_DIR=false
 
 sudo chown -R ec2-user:ec2-user $APP_DIR
 
+mkdir -p "$APP_DIR/logs"
+mkdir -p "$TMPDIR" "$PIP_CACHE_DIR"
+
 cd $APP_DIR || {
   echo "[SETUP] 디렉토리 $APP_DIR 존재하지 않음"
   exit 1
 }
 
-mkdir -p "$APP_DIR/logs"
-mkdir -p "$TMPDIR" "$PIP_CACHE_DIR"
+
 
 if [ -d "venv" ]; then
   echo "[SETUP] 기존 venv 삭제"
@@ -49,5 +51,7 @@ else
   echo "[SETUP] requirements.txt 없음"
   exit 1
 fi
+
+rm -rf $PIP_CACHE_DIR
 
 echo "[SETUP] 패키지 설치 완료"
