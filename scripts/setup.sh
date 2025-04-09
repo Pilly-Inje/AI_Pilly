@@ -3,15 +3,14 @@
 echo "[SETUP] FastAPI 가상환경 및 의존성 설치 시작"
 
 APP_DIR=/home/ec2-user/fastapi-app
-TMP_DIR=/home/ec2-user/tmp
+TMP_DIR=$APP_DIR/tmp
 export TMPDIR=$TMP_DIR
 export PIP_CACHE_DIR=$TMP_DIR/pip-cache
-export PIP_NO_CACHE_DIR=false 
+export PIP_NO_CACHE_DIR=false
 
 sudo chown -R ec2-user:ec2-user $APP_DIR
 
-mkdir -p "$APP_DIR/logs"
-mkdir -p "$TMPDIR" "$PIP_CACHE_DIR"
+mkdir -p "$APP_DIR/logs" "$TMPDIR" "$PIP_CACHE_DIR"
 
 cd $APP_DIR || {
   echo "[SETUP] 디렉토리 $APP_DIR 존재하지 않음"
