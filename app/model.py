@@ -18,9 +18,10 @@ from tensorflow.keras.layers import LSTM, Dense
 
 
 # RF_MODEL_PATH = os.path.join(os.path.dirname(__file__), "models","rf_side_effect_model.pkl")
-RF_MODEL_PATH = '/home/ec2-user/fastapi-app/models/rf_side_effect_model.pkl'
-LSTM_MODEL_PATH = "lstm_model.h5"
-SCALER_PATH = "scaler.pkl"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+RF_MODEL_PATH = os.path.join(BASE_DIR, "../models/rf_side_effect_model.pkl")
+LSTM_MODEL_PATH = os.path.join(BASE_DIR, "../models/lstm_model.h5")
+SCALER_PATH = os.path.join(BASE_DIR, "../models/scaler.pkl")
 LABELS = ["두통", "복통", "두드러기", "구토", "가려움증"]
 
 # DB 연결
