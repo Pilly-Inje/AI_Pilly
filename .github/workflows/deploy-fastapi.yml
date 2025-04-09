@@ -22,6 +22,7 @@ jobs:
 
     - name: Stop existing deployment (optional)
       run: |
+        export AWS_DEFAULT_REGION=ap-northeast-2
         DEPLOYMENT_ID=$(aws deploy list-deployments \
         --application-name $CODE_DEPLOY_APP_NAME \
         --deployment-group-name $DEPLOYMENT_GROUP_NAME \
