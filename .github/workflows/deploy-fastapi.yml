@@ -20,6 +20,19 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
+    - name: Stop existing deployment (optional)
+      run: |
+        DEPLOYMENT_ID=$(aws deploy list-deployments \
+        --application-name $CODE_DEPLOY_APP_NAME \
+        --deployment-group-name $DEPLOYMENT_GROUP_NAME \
+        --include-only-statuses Created InProgress \
+        --query "deployments[0]" --output text)
+
+        if [ "$DEPLOYMENT_ID" != "None" ]; then
+          echo "Stopping previous deployment: $DEPLOYMENT_ID"
+          aws deploy stop-deployment --deployment-id $DEPLOYMENT_ID
+        fi
+
     - name: Create .env File
       run: echo "${{ secrets.ENV_FILE }}" > .env
 
