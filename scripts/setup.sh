@@ -2,12 +2,14 @@
 
 echo "[SETUP] FastAPI 가상환경 및 의존성 설치 시작"
 
-cd /home/ec2-user/fastapi-app || {
-  echo "[SETUP] 디렉토리 /home/ec2-user/fastapi-app 존재하지 않음"
+APP_DIR=/home/ec2-user/fastapi-app
+
+cd $APP_DIR || {
+  echo "[SETUP] 디렉토리 $APP_DIR 존재하지 않음"
   exit 1
 }
 
-mkdir -p /home/ec2-user/fastapi-app/logs
+mkdir -p "$APP_DIR/logs"
 
 if [ -d "venv" ]; then
   echo "[SETUP] 기존 venv 삭제"
@@ -15,7 +17,7 @@ if [ -d "venv" ]; then
 fi
 
 python3 -m venv venv || {
-  echo "[SETUP] 가상환경 생성 실패"
+  echo "[SETUP] venv 생성 실패"
   exit 1
 }
 
@@ -23,6 +25,11 @@ source venv/bin/activate || {
   echo "[SETUP] 가상환경 활성화 실패"
   exit 1
 }
+
+if ! command -v pip &> /dev/null; then
+  echo "[SETUP] pip 명령어 없음, 설치 시도"
+  sudo yum install python3-pip -y || exit 1
+fi
 
 pip install --upgrade pip
 
