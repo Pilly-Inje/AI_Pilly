@@ -29,6 +29,7 @@ jobs:
         
     - name: Stop existing deployment (optional)
       run: |
+        export AWS_DEFAULT_REGION=ap-northeast-2
         DEPLOYMENT_ID=$(aws deploy list-deployments \
         --application-name $CODE_DEPLOY_APP_NAME \
         --deployment-group-name $DEPLOYMENT_GROUP_NAME \
@@ -45,7 +46,7 @@ jobs:
     - name: Prepare Deployment Package
       run: |
         mkdir -p deployment-package
-        cp -r app scripts appspec.yml requirements.txt .env deployment-package/
+        cp -r app scripts models appspec.yml requirements.txt .env deployment-package/
         cd deployment-package
         zip -r ../$GITHUB_SHA.zip .
 
