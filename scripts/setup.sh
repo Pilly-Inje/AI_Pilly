@@ -4,6 +4,8 @@ echo "[SETUP] FastAPI 가상환경 및 의존성 설치 시작"
 
 APP_DIR=/home/ec2-user/fastapi-app
 
+sudo chown -R ec2-user:ec2-user $APP_DIR
+
 cd $APP_DIR || {
   echo "[SETUP] 디렉토리 $APP_DIR 존재하지 않음"
   exit 1
