@@ -40,7 +40,7 @@ jobs:
     - name: Prepare Deployment Package
       run: |
         mkdir -p deployment-package
-        cp -r app scripts appspec.yml requirements.txt .env deployment-package/
+        cp -r app scripts models appspec.yml requirements.txt .env deployment-package/
         cd deployment-package
         zip -r ../$GITHUB_SHA.zip .
 
